@@ -1,24 +1,39 @@
 
-export async function fetchRecipes (filter){
-    const {query, limit} = filter;
+export async function fetchRecipes (){
 
-    const url = `https://api.edamam.com/search?q=${query}&app_id=96b38b6b&app_key=96eea15cd1361dd1fc85cf330ce55a78&from=0&to=${limit}&`;
+    const url =" http://127.0.0.1:8000/api/recipes/"
 
 
     const response = await fetch(url)
     console.log(response)
-    const data = await response.json();
-    console.log(data)
-    return data?.hits;
+    const recipe = await response.json();
+    console.log(recipe)
+    return recipe;
 }
 
-export async function fetchRecipe(id){
-const url = `https://api.edamam.com/search?r=http://www.edamam.com/ontologies/edamam.owl%23${id}&app_id=96b38b6b&app_key=
-96eea15cd1361dd1fc85cf330ce55a78`
+// export async function fetchRecipe(id){
+// const url = `http://127.0.0.1:8000/api/recipes/${id}/`
+// const response = await fetch(url)
+// console.log(response)
+// const data = await response.json();
 
-const response = await fetch(url)
+// return data[0];
+// }
+export async function fetchRecipe(id) {
+    const url = `http://127.0.0.1:8000/api/recipes/${id}/`;
 
-const data = await response.json();
+    try {
+        const response = await fetch(url);
+        console.log(response)
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-return data[0];
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch (error) {
+        console.error('Error fetching recipe:', error);
+        throw error;
+    }
 }

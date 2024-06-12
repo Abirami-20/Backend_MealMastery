@@ -19,38 +19,32 @@ import RecipeCard from '../components/RecipeCard'
 
 
 const RecipeDetail = () => {
-  const [recipe, setRecipe] = useState(null)
+  const [recipe, setRecipe] = useState([])
   const [recipes, setRecipes] = useState([])
   const [loading, setLoading] = useState(false)
 
   const { id } = useParams()
-
   const getRecipe = async (id) => {
     try {
-      setLoading(true)
-
-      const data = await fetchRecipe(id)
-
-      setRecipe(data)
-
-      const recommend = await fetchRecipes({ query: recipe?.label, limit: 5 })
-
-      setRecipes(recommend)
-
-      setLoading(false)
-
-
+      setLoading(true);
+      const data = await fetchRecipe(id);
+      setRecipe(data); // Set the recipe state with the fetched data
+  
+      // Fetch recommendations using the fetched recipe's label
+      const recommend = await fetchRecipes({ query: data?.label, limit: 5 });
+      setRecipes(recommend);
+      setLoading(false);
+      console.log(recipe)
     } catch (error) {
-      console.log(error)
-
-      setLoading(false)
+      console.log('Error fetching recipe:', error);
+      setLoading(false);
     }
-  }
-
+  };
+  
   useEffect(() => {
-    getRecipe(id)
-  }, [id])
-
+    getRecipe(id);
+  }, [id]);
+  
 
   if (loading) {
     return (
@@ -62,35 +56,28 @@ const RecipeDetail = () => {
   return (
     <div className='w-full'>
       <Header
-        title={recipe?.label} image={recipe?.image}
+        title={recipe?.title} image={recipe?.image}
       />
 
       <div className='w-full px-4 lg:px-20 pt-5'>
 
         <div className='flex gap-10 items-center justify-center px-4'>
-          <div className='flex flex-col justify-between'>
-            <span className='text-white text-center border border-gray-500 py-1.5 px-2 rounded-full mb-2'>{recipe?.calories.toFixed(2)} </span>
-
-            <p className='text-neutral-100 text-[12px] md:text-md'>CALORIES</p>
-          </div>
-
-          <div className='flex flex-col justify-center'>
+        <div className='flex flex-col justify-center'>
             <span className='text-white text-center border border-gray-500 py-1.5 rounded-full mb-2'>
-              {recipe?.totalTime}
+              {recipe.prep_time}
             </span>
             <p className='text-neutral-100 text-[12px] md:text-md'>
-              TOTAL TIME
+              PREPARATION TIME
             </p>
           </div>
-
           <div className='flex flex-col justify-center'>
             <span className='text-white text-center border border-gray-500 py-1.5 rounded-full mb-2'>
-              {recipe?.yield}
+              {recipe.cook_time}
             </span>
-            <p className='text-neutral-100 text-[12px] md:text-md'>SERVINGS</p>
+            <p className='text-neutral-100 text-[12px] md:text-md'>
+              COOK TIME
+            </p>
           </div>
-
-
         </div>
 
         <div className='w-full flex flex-col md:flex-row gap-8 py-20 pxx-4 md:px-10'>
@@ -98,30 +85,18 @@ const RecipeDetail = () => {
           <div className='w-full md:w-2/4 md:border-r border-slate-800 pr-1'>
             <div className='flex flex-col gap-5'>
               <p className='text-green-500 text-2xl underline'>Ingredients</p>
-
-              {
-                recipe?.ingredientLines?.map((ingredient, index) => {
-                  return (
-                    <p key={index} className='text-neutral-100 flex gap-2'>
-                      <AiFillPushpin className='text-green-800 text-xl' /> {ingredient}
+                    <p className='text-neutral-100 flex gap-2'>
+                      <AiFillPushpin className='text-green-800 text-xl' /> {recipe.ingredients}
                     </p>
-                  )
-                })
-              }
             </div>
-
             <div className='flex flex-col gap-3 mt-20'>
-              <p className='text-green-700 text-2xl underline'>Health Labels</p>
+              <p className='text-green-700 text-2xl underline'>Instructions</p>
 
               <div className='flex flex-wrap gap-4'>
-                {
-                  recipe?.healthLabels.map((item, index) => (
-                    <p className='text-white flex gap-2 bg-[#fff5f518] px-4 py-1 rounded-full ' key={index}>
-                      <BsPatchCheck color='green' /> {item}
+                    <p className='text-white flex gap-2  px-4 py-1 rounded-md text-24 '>
+                      <BsPatchCheck  className="text-5xl" color='green' /> {recipe.instructions}
                     </p>
-                  ))
-                }
-
+                 
               </div>
             </div>
           </div>

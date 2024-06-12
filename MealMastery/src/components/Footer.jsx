@@ -2,7 +2,7 @@ import { FaGithub, FaInstagram, FaMailBulk} from "react-icons/fa";
 
 const Footer = () => {
     return (
-        <footer className="text-white py-8 bg_gradient">
+        <footer className="text-white pt-8 bg_gradient">
             <div className="container mx-auto px-20 lg:px-20 py-8 flex flex-col gap-10 md:flex-row justify-evenly border-t border-slate-800">
                 <div className="flex">
                     <p className="font-bold text-center">
@@ -13,7 +13,7 @@ const Footer = () => {
                     <p>SOCIAL MEDIA</p>
                     <div className="flex mt-4 gap-3">
                     <a
-                            href='#'
+                            href='https://github.com/Abirami-20'
                             className='bg-green-600 p-1.5 rounded-sm text-white hover:text-gray-500 hover:scale-110'
                         >
                             <FaGithub size={18} />

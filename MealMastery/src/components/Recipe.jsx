@@ -6,10 +6,9 @@ import RecipeCard from "./RecipeCard";
 import { fetchRecipes } from "../utils";
 const Recipe = () => {
   const [recipe, setrecipe] = useState([]);
-  const [query, setQuery] = useState("Chicken");
+  const [query, setQuery] = useState();
   const [limit, setLimit] = useState(50);
   const [loading, setLoading] = useState(false);
-
   useEffect(() => {
     setLoading(true);
 
@@ -18,10 +17,9 @@ const Recipe = () => {
 
   const fetchRecipe = async () => {
     try {
-      const data = await fetchRecipes({ query, limit });
-
+      const data = await fetchRecipes();
+      console.log(data)
       setrecipe(data);
-
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -40,27 +38,13 @@ const Recipe = () => {
   return (
     <div>
       <div  id="recipes"className="w-full flex items-center justify-center pt-10 pb-5 px-0 md:px-10">
-        <form
-          className="w-full lg:w-2/4"
-           onSubmit={handleSearchedRecipe}
-        >
-          <Searchbar
-            placeholder="eg. Cake, Vegan, Chicken"
-            handleInputChange={(e) => setQuery(e.target.value)}
-            rightIcon={
-              <BiSearchAlt2
-                className="text-gray-600"
-                onClick={handleSearchedRecipe}
-              />
-            }
-          />
-        </form>
+        <h1 className="text-5xl font-bold">Recipes</h1>
       </div>
       {recipe?.length > 0 ? (
         <>
           <div className="w-full  flex flex-wrap gap-10 px-0 py-10 ">
-            {recipe?.map((item, index) => (
-              <RecipeCard recipe={item} key={index} />
+            {recipe?.map((item) => (
+              <RecipeCard recipe={item}/>
             ))}
           </div>
         </>
