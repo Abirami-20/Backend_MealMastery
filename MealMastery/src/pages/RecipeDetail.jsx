@@ -22,14 +22,14 @@ const RecipeDetail = () => {
   const [recipe, setRecipe] = useState([])
   const [recipes, setRecipes] = useState([])
   const [loading, setLoading] = useState(false)
-
+  const baseUrl='http://127.0.0.1:8000/'
   const { id } = useParams()
   const getRecipe = async (id) => {
     try {
       setLoading(true);
       const data = await fetchRecipe(id);
       setRecipe(data); // Set the recipe state with the fetched data
-  
+      console.log(data)
       // Fetch recommendations using the fetched recipe's label
       const recommend = await fetchRecipes({ query: data?.label, limit: 5 });
       setRecipes(recommend);
@@ -83,6 +83,9 @@ const RecipeDetail = () => {
         <div className='w-full flex flex-col md:flex-row gap-8 py-20 pxx-4 md:px-10'>
           {/* LEFT SIDE */}
           <div className='w-full md:w-2/4 md:border-r border-slate-800 pr-1'>
+          <img 
+          className="rounded-lg w-[70%] ml-32 mb-4 h-auto"
+          src={`${baseUrl}${recipe.image}`}/>
             <div className='flex flex-col gap-5'>
               <p className='text-green-500 text-2xl underline'>Ingredients</p>
                     <p className='text-neutral-100 flex gap-2'>
